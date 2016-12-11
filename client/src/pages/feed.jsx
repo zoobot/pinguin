@@ -1,34 +1,59 @@
 import React from 'react';
 
-var feed = {urls: ['http://www.evilmadscientist.com/feed/','http://boingboing.net/feed', 'http://hackaday.com/feed/']}
+    var subscriptions = {urls: ['http://www.evilmadscientist.com/feed/','http://boingboing.net/feed', 'http://hackaday.com/feed/']}
 
 class Feed extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      subscriptions: {},
+      defaultFeed: 'test'
+    }
+    // this.handleFeeds = this.handleFeeds.bind(this);
+    // this.handleGet = this.handleFeeds.bind(this);
+  }
 
-  handFeeds(feedArr){
-    const textarea = document.getElementById('feeds')
-    feedArr.map(function(url) {
+  changeSubscription(video) {
+    this.setState({defaultFeed: this.state.defaultFeed});
+  }
+
+  handFeeds(event){
+
+    subscriptions.urls.map(function(url) {
       feednami.load(url)
         .then(feed => {
-          console.log(feed)
-          textarea.value = ''
           for(let entry of feed.entries) {
-            textarea += `${entry.title}\n${entry.link}\n\n`
+            this.state.defaultFeed += `${entry.title}\n${entry.link}\n\n`
           }
-          console.log(textarea)
         })
     })
+    event.preventDefault();
   }
 
-  handleGet(event) {
-    Util.getFeed()
+  handleChangeFeed(event) {
+    console.log("handleChangeFeed triggered")
+    var list = ''
+    subscriptions.urls.map(function(url) {
+        feednami.load(url)
+          .then(feed => {
+            for(let entry of feed.entries) {
+              list += `${entry.title}\n${entry.link}\n\n`
+            }
+            console.log(list)
+          })
+      })
+    this.setState({defaultFeed: list})
+    event.preventDefault();
   }
+
 
   render() {
     return (
-      <form onSubmit={this.handleFeeds}>
-        <button type="submit" value="Submit">REFRESH</button>
-      </form>
-      <div id="feeds"></div>
+      <div>
+        <h1>SIGNIN</h1>
+        <button onClick={this.handleChangeFeed}>REFRESH</button>
+        <div id="feed">{this.state.defaultFeed}</div>
+      </div>
     )
   }
 }
