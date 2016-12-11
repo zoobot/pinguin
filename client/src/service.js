@@ -60,7 +60,7 @@ module.exports = {
             $.ajax({
                 url: "/api/signin",
                 data: JSON.stringify(pinguin),
-                method: "PUT",
+                method: "POST",
                 dataType: "json",
                 contentType: "application/json",
                 success: resolve,
@@ -74,7 +74,7 @@ module.exports = {
             $.ajax({
                 url: "/api/signout",
                 data: JSON.stringify(pinguin),
-                method: "PUT",
+                method: "POST",
                 dataType: "json",
                 contentType: "application/json",
                 success: resolve,
